@@ -17,6 +17,12 @@ jobs:
 
     # Skip any PR created by dependabot to avoid permission issues:
     if: (github.actor != 'dependabot[bot]')
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
 
     steps:
       # Fetch project source with GitHub Actions Checkout. Use either v3 or v4.
@@ -39,7 +45,7 @@ jobs:
     
           # Upload SARIF file generated in previous step
       - name: Upload SARIF result to the GitHub Security Dashboard
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: semgrep-results.sarif
         if: always()
